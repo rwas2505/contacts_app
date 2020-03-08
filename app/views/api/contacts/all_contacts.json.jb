@@ -1,3 +1,0 @@
-{ message: "All contacts route",
-  list: @all_contacts
-}
