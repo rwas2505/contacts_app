@@ -1,6 +1,19 @@
 class Api::ContactsController < ApplicationController
   def index
-    @contacts = Contact.all
+    p "*" * 90
+    p current_user
+    p "*" * 90
+       # all the contacts
+      # but only MY contacts
+      # and only in a certain group
+    if current_user
+      group = Group.find_by(name: params[:category_name])
+      people = group.contacts
+      my_people = people.where(user_id: current_user.id)
+      @contacts = my_people
+    else
+      @contacts = []
+    end
     render "index.json.jb"
   end
 
@@ -10,6 +23,7 @@ class Api::ContactsController < ApplicationController
   end
 
   def create
+    p current_user
     @contact = Contact.new(
       first_name: params[:first_name], 
       middle_name: params[:middle_name],
@@ -18,7 +32,8 @@ class Api::ContactsController < ApplicationController
       email: params[:email],
       bio: params[:bio],
       latitude: Geocoder.coordinates(params[:address])[0],
-      longitude:Geocoder.coordinates(params[:address])[1]
+      longitude: Geocoder.coordinates(params[:address])[1],
+      user_id: current_user.id
     )
     if @contact.save
       render "show.json.jb"
