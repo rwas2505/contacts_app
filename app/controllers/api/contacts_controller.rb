@@ -6,14 +6,15 @@ class Api::ContactsController < ApplicationController
        # all the contacts
       # but only MY contacts
       # and only in a certain group
-    if current_user
-      group = Group.find_by(name: params[:category_name])
-      people = group.contacts
-      my_people = people.where(user_id: current_user.id)
-      @contacts = my_people
-    else
-      @contacts = []
-    end
+    # if current_user
+    #   group = Group.find_by(name: params[:category_name])
+    #   people = group.contacts
+    #   my_people = people.where(user_id: current_user.id)
+    #   @contacts = my_people
+    # else
+    #   @contacts = []
+    # end
+    @contacts = Contact.all
     render "index.json.jb"
   end
 
@@ -50,8 +51,8 @@ class Api::ContactsController < ApplicationController
     @contact.phone_number = params[:phone_number] || @contact.phone_number
     @contact.email= params[:email] || @contact.email
     @contact.bio = params[:bio] || @contact.bio
-    @contact.longitude = Geocoder.coordinates(params[:address])[0]
-    @contact.latitude = Geocoder.coordinates(params[:address])[1]
+    # @contact.longitude = Geocoder.coordinates(params[:address])[0]
+    # @contact.latitude = Geocoder.coordinates(params[:address])[1]
     
     if @contact.save
       render "show.json.jb"

@@ -10,5 +10,6 @@
   latitude: contact.latitude,
   longitude: contact.longitude,
   groups: contact.groups,
+  bio: contact.bio,
   user_id: current_user.id
 }
